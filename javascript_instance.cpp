@@ -81,6 +81,20 @@ Variant::Type JavaScriptInstance::get_property_type(const StringName &p_name, bo
 	return Variant::NIL;
 }
 
+void JavaScriptInstance::validate_property(PropertyInfo &p_property) const {
+	ERR_FAIL_COND(binder == NULL);
+	ERR_FAIL_COND(javascript_object.javascript_object == NULL);
+
+	Variant property_arg = (Dictionary)p_property;
+	const Variant *args[1] = { &property_arg };
+
+	Variant ret;
+	Callable::CallError r_error;
+	if (binder->has_method(javascript_object, "validate_property")) {
+		binder->call_method(javascript_object, "validate_property", args, 1, r_error);
+	}
+}
+
 Variant JavaScriptInstance::callp(const StringName &p_method, const Variant **p_args, int p_argcount, Callable::CallError &r_error) {
 	if (binder == NULL || javascript_object.javascript_object == NULL) {
 		r_error.error = Callable::CallError::CALL_ERROR_INSTANCE_IS_NULL;

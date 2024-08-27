@@ -260,6 +260,10 @@ bool JavaScript::is_valid() const {
 	return javascript_class != NULL;
 }
 
+bool JavaScript::is_abstract() const {
+	return false;
+}
+
 void JavaScript::_bind_methods() {
 }
 

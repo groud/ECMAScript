@@ -88,12 +88,13 @@ public:
 	virtual Error execute_file(const String &p_path);
 
 	virtual void get_reserved_words(List<String> *p_words) const override;
-	virtual bool is_control_flow_keyword(String p_keywords) const override;
+	virtual bool is_control_flow_keyword(const String &p_string) const override;
 	virtual void get_comment_delimiters(List<String> *p_delimiters) const override;
+	virtual void get_doc_comment_delimiters(List<String> *p_delimiters) const override;
 	virtual void get_string_delimiters(List<String> *p_delimiters) const override;
 
 	virtual Ref<Script> make_template(const String &p_template, const String &p_class_name, const String &p_base_class_name) const override;
-	virtual Vector<ScriptTemplate> get_built_in_templates(StringName p_object) override;
+	virtual Vector<ScriptTemplate> get_built_in_templates(const StringName &p_object) override;
 	virtual bool is_using_templates() override { return true; }
 
 	virtual Script *create_script() const override;
@@ -127,6 +128,7 @@ public:
 
 	void reload_script(const Ref<Script> &p_script, bool p_soft_reload);
 
+	virtual void reload_scripts(const Array &p_scripts, bool p_soft_reload) override;
 	virtual void reload_all_scripts() override;
 	virtual void reload_tool_script(const Ref<Script> &p_script, bool p_soft_reload) override { reload_script(p_script, p_soft_reload); }
 
@@ -138,6 +140,7 @@ public:
 
 	virtual void profiling_start() override {}
 	virtual void profiling_stop() override {}
+	virtual void profiling_set_save_native_calls(bool p_enable) override {};
 
 	virtual int profiling_get_accumulated_data(ProfilingInfo *p_info_arr, int p_info_max) override { return -1; }
 	virtual int profiling_get_frame_data(ProfilingInfo *p_info_arr, int p_info_max) override { return -1; }

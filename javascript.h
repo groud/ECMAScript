@@ -87,6 +87,7 @@ public:
 
 #ifdef TOOLS_ENABLED
 	_FORCE_INLINE_ virtual Vector<DocData::ClassDoc> get_documentation() const override { return Vector<DocData::ClassDoc>(); }
+	virtual String get_class_icon_path() const { return ""; }
 #endif
 
 	virtual bool has_method(const StringName &p_method) const override;
@@ -94,6 +95,7 @@ public:
 
 	virtual bool is_tool() const override;
 	virtual bool is_valid() const override;
+	virtual bool is_abstract() const override;
 
 	virtual ScriptLanguage *get_language() const override;
 

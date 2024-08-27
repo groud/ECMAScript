@@ -51,6 +51,7 @@ public:
 	virtual bool get(const StringName &p_name, Variant &r_ret) const override;
 	virtual void get_property_list(List<PropertyInfo> *p_properties) const override;
 	virtual Variant::Type get_property_type(const StringName &p_name, bool *r_is_valid = nullptr) const override;
+	virtual void validate_property(PropertyInfo &p_property) const override;
 	virtual bool property_can_revert(const StringName &p_name) const override { return false; };
 	virtual bool property_get_revert(const StringName &p_name, Variant &r_ret) const override { return false; };
 
@@ -63,7 +64,7 @@ public:
 	virtual Ref<Script> get_script() const override;
 	virtual ScriptLanguage *get_language() override;
 
-	/* TODO */ virtual void notification(int p_notification) override{};
+	/* TODO */ virtual void notification(int p_notification, bool p_reversed = false) override {};
 
 	JavaScriptInstance();
 	~JavaScriptInstance();

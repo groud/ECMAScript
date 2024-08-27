@@ -227,24 +227,29 @@ void JavaScriptLanguage::get_reserved_words(List<String> *p_words) const {
 	}
 }
 
-bool JavaScriptLanguage::is_control_flow_keyword(String p_keyword) const {
-	return p_keyword == "if" ||
-			p_keyword == "else" ||
-			p_keyword == "return" ||
-			p_keyword == "do" ||
-			p_keyword == "while" ||
-			p_keyword == "for" ||
-			p_keyword == "break" ||
-			p_keyword == "continue" ||
-			p_keyword == "switch" ||
-			p_keyword == "case" ||
-			p_keyword == "throw" ||
-			p_keyword == "try" ||
-			p_keyword == "catch" ||
-			p_keyword == "finally";
+bool JavaScriptLanguage::is_control_flow_keyword(const String &p_string) const {
+	return p_string == "if" ||
+			p_string == "else" ||
+			p_string == "return" ||
+			p_string == "do" ||
+			p_string == "while" ||
+			p_string == "for" ||
+			p_string == "break" ||
+			p_string == "continue" ||
+			p_string == "switch" ||
+			p_string == "case" ||
+			p_string == "throw" ||
+			p_string == "try" ||
+			p_string == "catch" ||
+			p_string == "finally";
 }
 
 void JavaScriptLanguage::get_comment_delimiters(List<String> *p_delimiters) const {
+	p_delimiters->push_back("//"); // single-line comment
+	p_delimiters->push_back("/* */"); // delimited comment
+}
+
+void JavaScriptLanguage::get_doc_comment_delimiters(List<String> *p_delimiters) const {
 	p_delimiters->push_back("//"); // single-line comment
 	p_delimiters->push_back("/* */"); // delimited comment
 }
@@ -263,7 +268,7 @@ Ref<Script> JavaScriptLanguage::make_template(const String &p_template, const St
 	return javaScript;
 }
 
-Vector<ScriptLanguage::ScriptTemplate> JavaScriptLanguage::get_built_in_templates(StringName p_object) {
+Vector<ScriptLanguage::ScriptTemplate> JavaScriptLanguage::get_built_in_templates(const StringName &p_object) {
 	Vector<ScriptLanguage::ScriptTemplate> templates;
 #ifdef TOOLS_ENABLED
 	constexpr int len = 2;
@@ -328,6 +333,18 @@ bool JavaScriptLanguage::validate(const String &p_script, const String &p_path, 
 
 Script *JavaScriptLanguage::create_script() const {
 	return memnew(JavaScript);
+}
+
+
+void JavaScriptLanguage::reload_scripts(const Array &p_scripts, bool p_soft_reload) {
+#ifdef TOOLS_ENABLED
+	for (const Variant &v : p_scripts) {
+		Ref<JavaScript> s = v;
+		if (s.is_valid()) {
+			reload_script(s, p_soft_reload);
+		}
+	}
+#endif
 }
 
 void JavaScriptLanguage::reload_all_scripts() {
